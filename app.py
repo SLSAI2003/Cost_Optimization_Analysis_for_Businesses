@@ -11,7 +11,7 @@ from sklearn.preprocessing import LabelEncoder
 import warnings
 warnings.filterwarnings("ignore")
 
-st.set_page_config(page_title="Cost Optimization For Businesses", page_icon="💼",
+st.set_page_config(page_title="Cost Optimization Analysis For Businesses", page_icon="💼",
                    layout="wide", initial_sidebar_state="expanded")
 
 # ── session state defaults ────────────────────────────────────────────────────
@@ -84,7 +84,7 @@ def brand_header():
         <h1 style="margin:0;font-size:1.75rem;font-weight:800;
                    background:linear-gradient(135deg,{T['blue']},{T['purple']});
                    -webkit-background-clip:text;-webkit-text-fill-color:transparent;">
-          💼 Cost Optimization for Businesses </h1>
+          💼 Cost Optimization Analysis for Businesses </h1>
         <p style="margin:4px 0 0;font-size:0.79rem;color:{T['text_b']};">
           Business Cost Optimization &amp; Profitability Intelligence</p>
       </div>
@@ -164,7 +164,7 @@ def load_df_from_bytes(file_bytes, file_name):
 # ── sidebar ───────────────────────────────────────────────────────────────────
 with st.sidebar:
     st.markdown(f"""<div style="padding:0.2rem 0 1rem;margin-bottom:0.7rem;border-bottom:1px solid rgba(255,255,255,0.06);">
-        <div style="font-size:1.1rem;font-weight:800;color:#f0f6ff;letter-spacing:-0.02em;">💼 Cost Optimization for Businesses </div>
+        <div style="font-size:1.1rem;font-weight:800;color:#f0f6ff;letter-spacing:-0.02em;">💼 Cost Optimization Analysis for Businesses </div>
         <div style="font-size:0.67rem;color:#475569;margin-top:2px;">Business Optimization Suite</div>
     </div>""", unsafe_allow_html=True)
 
@@ -234,7 +234,7 @@ if st.session_state.uploaded_file_bytes is None:
         <h1 style="font-size:1.9rem;font-weight:800;margin:0;
                    background:linear-gradient(135deg,{T['blue']},{T['purple']});
                    -webkit-background-clip:text;-webkit-text-fill-color:transparent;">
-            Cost Optimization for Businesses</h1>
+            Cost Optimization Analysis for Businesses</h1>
         <p style="color:{T['text_b']};font-size:0.88rem;max-width:400px;line-height:1.7;margin:0;">
             Upload your <b>dataset</b> (.xlsx or .csv) below to unlock
             analytics, maps, ML prediction, and live cost-saving signals.</p>
