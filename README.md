@@ -1,0 +1,3 @@
+The project “Cost Optimization Analysis for Businesses” is a data-driven analytical system designed to identify cost inefficiencies and improve business profitability using data analytics and machine learning techniques.
+This project analyzes a retail dataset (Sample Superstore) containing around 9,994 transaction records with features such as sales, profit, discount, product categories, customer segments, and regions.
+The main objective is to understand how different factors—like discounts, product categories, and regions—affect profitability and to provide actionable insights for cost optimization.
