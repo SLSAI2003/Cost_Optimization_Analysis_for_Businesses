@@ -205,61 +205,34 @@ with st.sidebar:
     ins_panel  = st.empty()
     divider()
 
-    with st.expander("📖 User Manual"):
-        st.markdown(f"""<div style='font-size:0.75rem;color:#94a3b8;line-height:1.65;'>
-
-**How to use CostIQ:**
-
-• Upload your `.xlsx` or `.csv` from the main screen — it persists across theme switches.
-
-• **Filters are dependent** — choosing a Region limits Categories to that Region's data only.
-
-• 🚨 **Sidebar Signals** show live loss alerts. Act on red items first.
-
-• **What-If Predictor** — use sliders to stress-test scenarios before committing.
-
-• Dark Mode toggle persists — sliders/filters won't reset when you switch theme.
-</div>""")
-
 # ── load data — persist across theme toggles ──────────────────────────────────
 # Check if a new file was uploaded via the center uploader (handled below via key)
 _center_upload_key = "center_file_uploader"
 
 # If no data loaded yet — show center upload screen
-if st.session_state.uploaded_file_bytes is None:
-    # Center upload widget
-    st.markdown(f"""<div style="display:flex;flex-direction:column;align-items:center;
-                justify-content:center;min-height:60vh;text-align:center;gap:1rem;">
-        <div style="font-size:5rem;line-height:1;">💼</div>
-        <h1 style="font-size:1.9rem;font-weight:800;margin:0;
-                   background:linear-gradient(135deg,{T['blue']},{T['purple']});
-                   -webkit-background-clip:text;-webkit-text-fill-color:transparent;">
-            Cost Optimization Analysis for Businesses</h1>
-        <p style="color:{T['text_b']};font-size:0.88rem;max-width:400px;line-height:1.7;margin:0;">
-            Upload your <b>dataset</b> (.xlsx or .csv) below to unlock
-            analytics, maps, ML prediction, and live cost-saving signals.</p>
-    </div>""", unsafe_allow_html=True)
+# ── AUTO LOAD DEFAULT DATASET ─────────────────────────────
 
-    # Center the file uploader
-    _uc1, _uc2, _uc3 = st.columns([1, 2, 1])
-    with _uc2:
-        center_file = st.file_uploader(
-            "Drop your dataset here (.xlsx or .csv)",
-            type=["xlsx", "xls", "csv"],
-            key=_center_upload_key,
-            label_visibility="visible"
-        )
-        if center_file is not None:
-            st.session_state.uploaded_file_bytes = center_file.read()
-            st.session_state.uploaded_file_name  = center_file.name
-            st.rerun()
-    st.stop()
+df_raw = pd.read_excel("DataSet.xlsx")
 
-# Data is loaded — parse it
-df_raw = load_df_from_bytes(
-    st.session_state.uploaded_file_bytes,
-    st.session_state.uploaded_file_name
-)
+df_raw.drop_duplicates(inplace=True)
+df_raw.columns = df_raw.columns.str.strip()
+
+for c in ["Category","Sub-Category","Region","Segment","Ship Mode","State","City","Country"]:
+    if c in df_raw.columns:
+        df_raw[c] = df_raw[c].astype(str).str.strip()
+
+for c in ["Sales","Profit","Discount","Quantity"]:
+    if c in df_raw.columns:
+        df_raw[c] = pd.to_numeric(df_raw[c], errors="coerce")
+
+df_raw.fillna(0, inplace=True)
+
+if {"Sales","Profit"} <= set(df_raw.columns):
+    df_raw["Profit Margin %"] = np.where(
+        df_raw["Sales"] != 0,
+        df_raw["Profit"] / df_raw["Sales"] * 100,
+        0
+    )
 
 # ── dependent multi-select filters ───────────────────────────────────────────
 # Helper: empty list = "All" (no filter applied)
